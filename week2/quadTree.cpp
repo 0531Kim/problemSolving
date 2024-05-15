@@ -1,45 +1,46 @@
 #include <bits/stdc++.h>
 using namespace std;
 int n, mp[70][70], visited[70][70];
+string s;
 int dy[] = {-1, 0, 1, 0};
 int dx[] = {0, 1, 0, -1};
-void dfs(int y, int x, int l)
+void go(int y, int x, int l)
 {
+    cout << y << " " << x << " " << l << "\n";
     if (l == 1)
     {
         cout << mp[y][x];
         return;
     }
-    for (int i = 0; i < 4; i++)
+    for (int i = y; i < y + l; i++)
     {
-        int ny = y + dy[i];
-        int nx = x + dx[i];
-        if (ny < y || nx < x || ny >= y + l || nx >= x + l)
-            continue;
-        if (visited[ny][nx])
-            continue;
-        if (mp[ny][nx] != mp[y][x])
+        for (int j = x; x < x + l; j++)
         {
-            memset(visited, 0, sizeof(visited));
-            cout << "(";
-            dfs(y, x, l / 2);
-            dfs(y + l / 2, x, l / 2);
-            dfs(y, x + l / 2, l / 2);
-            dfs(y + l / 2, x + l / 2, l / 2);
-            cout << ")";
+            if (mp[i][j] != mp[y][x])
+            {
+                // cout << "(";
+                cout << "in: " << i << " " << j << " " << mp[i][j] << " " << mp[y][x] << '\n';
+                go(y, x, l / 2);
+                go(y, x + l / 2, l / 2);
+                go(y + l / 2, x, l / 2);
+                go(y + l / 2, x + l / 2, l / 2);
+                // cout << ")";
+            }
         }
     }
+    // cout << mp[y][x];
 }
 int main()
 {
     cin >> n;
     for (int i = 0; i < n; i++)
     {
-        for (int j = 0; j < n; j++)
+        cin >> s;
+        for (int j = 0; j < s.length(); j++)
         {
-            cin >> mp[i][j];
+            mp[i][j] = (int)s[j];
         }
     }
-    dfs(0, 0, n);
+    go(0, 0, n);
     return 0;
 }
